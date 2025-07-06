@@ -7,8 +7,13 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 import json
 import tempfile
+import logging
 from werkzeug.utils import secure_filename
 from meme_sentiment_analyzer import MemeSentimentAnalyzer
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
@@ -65,7 +70,8 @@ def analyze():
         return jsonify(result)
     
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        logger.error(f"Error in analyze endpoint: {e}")
+        return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/batch', methods=['POST'])
 def batch_analyze():
@@ -78,7 +84,8 @@ def batch_analyze():
         return jsonify({"results": results})
     
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        logger.error(f"Error in batch endpoint: {e}")
+        return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/health')
 def health():
@@ -342,4 +349,7 @@ if __name__ == '__main__':
     
     print("🚀 Starting Meme Sentiment Analyzer Web App...")
     print("📱 Open your browser and go to: http://localhost:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    
+    # Set debug mode based on environment variable for security
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(debug=debug_mode, host='127.0.0.1', port=5000)

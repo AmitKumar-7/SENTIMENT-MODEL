@@ -69,7 +69,7 @@ class RuleBasedSentimentClassifier:
             "\U0001F1E0-\U0001F1FF"  # flags (iOS)
             "\U00002702-\U000027B0"
             "\U000024C2-\U0001F251"
-            "]+", flags=re.UNICODE
+            "]", flags=re.UNICODE  # Removed + to make it non-greedy
         )
         return emoji_pattern.findall(text)
     

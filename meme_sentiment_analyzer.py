@@ -292,7 +292,7 @@ class MemeSentimentAnalyzer:
     
     def download_from_url(self, url: str) -> str:
         """
-        Download content from URL
+        Download content from URL with security checks
         
         Args:
             url: URL to download from
@@ -301,7 +301,36 @@ class MemeSentimentAnalyzer:
             Path to downloaded file
         """
         try:
-            response = requests.get(url, timeout=30)
+            # Validate URL
+            if not validators.url(url):
+                raise ValueError("Invalid URL format")
+            
+            # Parse URL to check for potential SSRF
+            parsed = urlparse(url)
+            
+            # Block localhost and private IP ranges
+            if parsed.hostname in ['localhost', '127.0.0.1', '0.0.0.0']:
+                raise ValueError("Access to localhost is not allowed")
+            
+            # Block private IP ranges
+            if parsed.hostname and (
+                parsed.hostname.startswith('192.168.') or
+                parsed.hostname.startswith('10.') or
+                parsed.hostname.startswith('172.16.') or
+                parsed.hostname.startswith('172.17.') or
+                parsed.hostname.startswith('172.18.') or
+                parsed.hostname.startswith('172.19.') or
+                parsed.hostname.startswith('172.2') or
+                parsed.hostname.startswith('172.30.') or
+                parsed.hostname.startswith('172.31.')
+            ):
+                raise ValueError("Access to private IP ranges is not allowed")
+            
+            # Only allow HTTP and HTTPS
+            if parsed.scheme not in ['http', 'https']:
+                raise ValueError("Only HTTP and HTTPS URLs are allowed")
+            
+            response = requests.get(url, timeout=30, allow_redirects=False)
             response.raise_for_status()
             
             # Determine file type from content-type or URL
@@ -413,6 +442,11 @@ class MemeSentimentAnalyzer:
                 if validators.url(input_data):
                     input_type = "url"
                 elif os.path.isfile(input_data):
+                    # Validate file path to prevent path traversal
+                    normalized_path = os.path.normpath(input_data)
+                    if '..' in normalized_path or normalized_path.startswith('/'):
+                        raise ValueError("Invalid file path detected")
+                    
                     ext = os.path.splitext(input_data)[1].lower()
                     if ext in ['.jpg', '.jpeg', '.png', '.gif', '.bmp']:
                         input_type = "image"
