@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environment variables
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Model checkpoints (keep only final models)
+*/checkpoint-*/
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# --- Custom Rules for Meme Sentiment Project ---
+# Ignore large datasets (you can add them back if needed)
+/balanced_emotion_dataset/
+/meme_dataset/
+
+# Ignore temporary upload directory for the API
+/temp_uploads/
+
+# Ignore analysis results from tests
+/analysis_result_*.json
+
+# Keep specific important files (even if they match other patterns)
+!/meme_training_dataset_final.csv
+
+# Downloaded content
+downloaded_memes/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.avi
+*.mov
