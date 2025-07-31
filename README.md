@@ -1,41 +1,43 @@
 # 🎯 Meme Sentiment Analyzer
 
-A comprehensive sentiment analysis system that can analyze memes from various input formats including text, images, videos, and URLs. The system uses advanced NLP models to determine sentiment and categorize memes into different types.
+A powerful multimodal sentiment analysis system that can analyze memes from various formats including text, images, videos, and URLs. The system uses state-of-the-art NLP and computer vision models to determine sentiment with high accuracy.
 
 ## ✨ Features
 
-- **Multi-format Input Support**:
-  - 📝 Text analysis
-  - 🖼️ Image analysis (with OCR)
-  - 🎥 Video analysis (frame extraction + OCR)
-  - 🔗 URL analysis (downloads and processes content)
+- **Advanced Multimodal Analysis**:
+  - 📝 Text sentiment analysis with fine-tuned BERT model
+  - 🖼️ Image analysis with enhanced OCR and visual understanding
+  - 🎥 Video analysis with frame extraction and processing
+  - 🔗 URL content analysis and processing
+  - 🤖 CLIP and BLIP model integration for visual context
 
-- **Advanced Analysis**:
+- **High-Performance Analysis**:
   - Sentiment classification (Positive, Negative, Neutral)
-  - Confidence scoring
-  - Meme categorization (Wholesome, Funny, Sarcastic, etc.)
-  - Contextual understanding
+  - Confidence scoring with detailed breakdowns
+  - Visual sentiment understanding
+  - Emotion detection capabilities
 
 - **Multiple Interfaces**:
-  - 🖥️ Command-line interface
-  - 🌐 Web interface
-  - 🐍 Python API
+  - 🚀 FastAPI server for production use
+  - 🌐 Flask web interface for interactive analysis
+  - 🐍 Python API for integration
 
 ## 🏗️ Project Structure
 
 ```
-sentimentmodel/
-├── meme_sentiment_analyzer.py    # Main analyzer class
-├── meme_cli.py                   # Command-line interface
-├── web_app.py                    # Web interface
-├── config.py                     # Configuration settings
-├── requirements.txt              # Dependencies
-├── README.md                     # This file
-├── dataset.csv                   # Training dataset
-├── .env                          # Environment variables
-├── production_model_v2/          # Trained model files
-├── meme_dataset/                 # Sample meme images
-└── logs/                         # Training logs
+sentimentmodel_cleaned/
+├── advanced_multimodal_analyzer.py  # Main multimodal analysis class
+├── api_main.py                      # FastAPI server
+├── web_app.py                       # Flask web interface
+├── config.py                        # Configuration settings
+├── train_from_scratch.py            # Model training script
+├── test_single_image.py             # Testing utilities
+├── requirements.txt                 # Python dependencies
+├── requirements_api.txt             # API-specific dependencies
+├── START_HERE.md                    # Training guide
+├── meme_training_dataset_final.csv  # Training dataset
+├── meme_sentiment_model_final/      # Trained model files
+└── templates/                       # Web interface templates
 ```
 
 ## 🚀 Quick Start
@@ -44,7 +46,7 @@ sentimentmodel/
 
 ```bash
 # Clone or navigate to the project directory
-cd sentimentmodel
+cd sentimentmodel_cleaned
 
 # Install dependencies
 pip install -r requirements.txt
@@ -55,7 +57,7 @@ pip install -r requirements.txt
 **Windows:**
 1. Download Tesseract OCR from: https://github.com/UB-Mannheim/tesseract/wiki
 2. Install and note the installation path
-3. Update the `TESSERACT_PATH` in your `.env` file:
+3. Update the `TESSERACT_PATH` in `config.py` or set as environment variable:
 ```
 TESSERACT_PATH=C:\Program Files\Tesseract-OCR\tesseract.exe
 ```
@@ -69,52 +71,52 @@ sudo apt-get install tesseract-ocr
 brew install tesseract
 ```
 
-### 3. Basic Usage
+### 3. Train Your Model (Recommended First Step)
+
+```bash
+# Train a high-quality model from scratch (see START_HERE.md for details)
+python train_from_scratch.py
+```
+
+### 4. Basic Usage
 
 #### Python API
 ```python
-from meme_sentiment_analyzer import MemeSentimentAnalyzer
+from advanced_multimodal_analyzer import AdvancedMultimodalAnalyzer
 
 # Initialize analyzer
-analyzer = MemeSentimentAnalyzer()
+analyzer = AdvancedMultimodalAnalyzer()
 
 # Analyze text
-result = analyzer.analyze_meme("This meme is hilarious! 😂", "text")
+result = analyzer.analyze_text_sentiment("This meme is hilarious! 😂")
 print(result)
 
 # Analyze image
 result = analyzer.analyze_meme("path/to/meme.jpg", "image")
 print(result)
-
-# Analyze URL
-result = analyzer.analyze_meme("https://example.com/meme.jpg", "url")
-print(result)
 ```
 
-#### Command Line
+#### FastAPI Server
 ```bash
-# Text analysis
-python meme_cli.py "This meme is so funny!"
+# Start FastAPI server for production
+uvicorn api_main:app --reload
 
-# Image analysis
-python meme_cli.py "path/to/meme.jpg" --type image
-
-# URL analysis
-python meme_cli.py "https://example.com/meme.jpg" --type url
-
-# Pretty output format
-python meme_cli.py "Funny meme text" --format pretty
-
-# Save results to file
-python meme_cli.py "Meme text" --output results.json
+# API will be available at: http://localhost:8000
+# Documentation at: http://localhost:8000/docs
 ```
 
-#### Web Interface
+#### Flask Web Interface
 ```bash
-# Start web server
+# Start Flask web server
 python web_app.py
 
 # Open browser and go to: http://localhost:5000
+```
+
+#### Test Your Setup
+```bash
+# Test with a single image
+python test_single_image.py
 ```
 
 ## 🔧 Configuration
